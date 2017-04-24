@@ -1,11 +1,18 @@
 package com.hikvision.ga.commons.config.net;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
+ * 消息
  * Created by wuqi5 on 2017/4/21.
  */
 public class Message {
+
     /**
      * 协议版本
      */
@@ -13,43 +20,114 @@ public class Message {
     /**
      * 消息类型
      */
-    private short type;
+    private byte type;
 
     /**
-     * 消息头长度
+     * 消息体长度
      */
     private int length;
+
+    private Map<String, String> attachment = new HashMap<>();
 
     /**
      * 消息体
      */
     private byte[] data;
 
-    static Object obj = null;
-    private static class MessageBuilder {
-
+    public static MessageBuilder oneway() {
+        return builder().type(MessageType.ONEWAY);
     }
 
-    public static void main(String[] args) {
-        Thread t1 = new Thread(() -> {
-            String str = "abc";
-            while (obj == null) {
-                System.out.println(str += "asdsfvasfdgvagfgvafgfasafae");
-                System.out.println("-------------------------------------------");
-            }
-        });
-        Thread t2 = new Thread(()->{
-            obj = new Object();
-        });
-        t1.setPriority(1);
-        t2.setPriority(9);
-        t1.start();
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
+    public static MessageBuilder request() {
+        return builder().type(MessageType.REQUEST);
+    }
+
+    public static MessageBuilder response() {
+        return builder().type(MessageType.RESPONSE);
+    }
+
+    public static MessageBuilder builder() {
+        return new MessageBuilder();
+    }
+
+    public static class MessageBuilder {
+        Message message;
+
+        public MessageBuilder() {
+            this.message = new Message();
         }
-        t2.start();
+
+        public MessageBuilder version(short version) {
+            message.setVersion(version);
+            return this;
+        }
+
+        public MessageBuilder type(byte type) {
+            message.setType(type);
+            return this;
+        }
+
+        public MessageBuilder data(byte[] data) {
+            message.setData(data);
+            return this;
+        }
+
+        public MessageBuilder withAttachment(String key, String value) {
+            message.putAttachment(key, value);
+            return this;
+        }
+
+        public MessageBuilder jsonData(Object object) {
+            message.setData(JSON.toJSONBytes(object, SerializerFeature.DisableCircularReferenceDetect));
+            return this;
+        }
+
+        public Message build() {
+            return message;
+        }
     }
 
+    public short getVersion() {
+        return version;
+    }
 
+    public void setVersion(short version) {
+        this.version = version;
+    }
+
+    public byte getType() {
+        return type;
+    }
+
+    public void setType(byte type) {
+        this.type = type;
+    }
+
+    public int getLength() {
+        return length;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
+
+    public byte[] getData() {
+        return data;
+    }
+
+    public void setData(byte[] data) {
+        this.data = data;
+    }
+
+    public Map<String, String> getAttachment() {
+        return attachment;
+    }
+
+    public void setAttachment(Map<String, String> attachment) {
+        this.attachment = attachment;
+    }
+
+    public void putAttachment(String key, String value) {
+        attachment.put(key, value);
+    }
 }
