@@ -15,7 +15,6 @@ public class MessageEncoder extends MessageToByteEncoder<Message> {
     @Override
     protected void encode(ChannelHandlerContext ctx, Message msg, ByteBuf out) throws Exception {
         out.writeShort(msg.getVersion());
-        out.writeInt(msg.getLength());
         out.writeByte(msg.getType());
         out.writeInt(msg.getAttachment().size());
         if (!msg.getAttachment().isEmpty()) {

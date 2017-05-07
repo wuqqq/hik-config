@@ -22,11 +22,6 @@ public class Message {
      */
     private byte type;
 
-    /**
-     * 消息体长度
-     */
-    private int length;
-
     private Map<String, String> attachment = new HashMap<>();
 
     /**
@@ -101,14 +96,6 @@ public class Message {
 
     public void setType(byte type) {
         this.type = type;
-    }
-
-    public int getLength() {
-        return length;
-    }
-
-    public void setLength(int length) {
-        this.length = length;
     }
 
     public byte[] getData() {
