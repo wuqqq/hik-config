@@ -4,11 +4,14 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 消息解码
  * Created by wuqi5 on 2017/4/24.
  */
-public class MessageDecoder extends LengthFieldBasedFrameDecoder{
+public class MessageDecoder extends LengthFieldBasedFrameDecoder {
 
     public MessageDecoder(int maxFrameLength, int lengthFieldOffset, int lengthFieldLength) {
         super(maxFrameLength, lengthFieldOffset, lengthFieldLength);
@@ -21,6 +24,34 @@ public class MessageDecoder extends LengthFieldBasedFrameDecoder{
         if (frame == null) {
             return null;
         }
-        return null;
+        Message msg = new Message();
+        msg.setVersion(in.readShort());
+        int len = in.readInt();
+        msg.setType(in.readByte());
+        int size = in.readInt();
+        if (size > 0) {
+            Map<String, String> attachment = new HashMap<>(size);
+            for (int i = 0; i < size; i++) {
+                // 解析key
+                int keySize = in.readInt();
+                byte[] keyArr = new byte[keySize];
+                in.readBytes(keyArr);
+                String key = new String(keyArr, "UTF-8");
+                // 解析value
+                int valSize = in.readInt();
+                byte[] valArr = new byte[valSize];
+                in.readBytes(valArr);
+                String val = new String(valArr, "UTF-8");
+                attachment.put(key, val);
+            }
+            msg.setAttachment(attachment);
+        }
+        int dataSize = in.readInt();
+        if (dataSize > 0) {
+            byte[] dataArr = new byte[dataSize];
+            in.readBytes(dataArr);
+            msg.setData(dataArr);
+        }
+        return msg;
     }
 }

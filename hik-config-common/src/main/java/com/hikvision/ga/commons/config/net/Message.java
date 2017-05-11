@@ -22,7 +22,7 @@ public class Message {
      */
     private byte type;
 
-    private Map<String, String> attachment = new HashMap<>();
+    private Map<String, String> attachment;
 
     /**
      * 消息体
@@ -115,6 +115,8 @@ public class Message {
     }
 
     public void putAttachment(String key, String value) {
+        if (attachment == null)
+            attachment = new HashMap<>();
         attachment.put(key, value);
     }
 }

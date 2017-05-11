@@ -21,17 +21,11 @@ public class MessageEncoder extends MessageToByteEncoder<Message> {
             for (Map.Entry<String, String> entry : msg.getAttachment().entrySet()) {
                 String key = entry.getKey();
                 String value = entry.getValue();
-                if (key != null && key.length() > 0) {
+                if (key != null && key.length() > 0 && value != null && value.length() > 0) {
                     out.writeInt(key.getBytes("UTF-8").length);
                     out.writeBytes(key.getBytes("UTF-8"));
-                } else {
-                    out.writeInt(0);
-                }
-                if (value != null) {
                     out.writeInt(value.getBytes("UTF-8").length);
                     out.writeBytes(value.getBytes("UTF-8"));
-                } else {
-                    out.writeInt(0);
                 }
             }
         }
