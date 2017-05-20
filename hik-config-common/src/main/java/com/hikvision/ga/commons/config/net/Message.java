@@ -82,6 +82,18 @@ public class Message {
         }
     }
 
+    public Request dataToRequest(){
+        return JSON.parseObject(data, Request.class);
+    }
+
+    public Response dataToResponse(){
+        return JSON.parseObject(data, Response.class);
+    }
+
+    public Request dataToOneway(){
+        return JSON.parseObject(data, Oneway.class);
+    }
+
     public short getVersion() {
         return version;
     }
