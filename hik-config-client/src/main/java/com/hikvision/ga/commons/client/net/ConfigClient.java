@@ -48,7 +48,7 @@ public class ConfigClient {
      */
     private int writeIdleTime = 5;
 
-    private final EventLoopGroup group = new NioEventLoopGroup(0, new ClientThreadFactory());
+    private final EventLoopGroup group = new NioEventLoopGroup(1, new ClientThreadFactory());
 
     private final ScheduledExecutorService reconnectExecutor = Executors.newScheduledThreadPool(1, new ThreadFactory() {
         @Override
