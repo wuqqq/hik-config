@@ -15,7 +15,7 @@ public class ConfigServerInfo {
     private String serverIP;
 
     @NotNull
-    private String serverPort;
+    private int serverPort;
 
     public String getServerIP() {
         return serverIP;
@@ -25,11 +25,11 @@ public class ConfigServerInfo {
         this.serverIP = serverIP;
     }
 
-    public String getServerPort() {
-        return serverPort;
+    public void setServerPort(int serverPort) {
+        this.serverPort = serverPort;
     }
 
-    public void setServerPort(String serverPort) {
-        this.serverPort = serverPort;
+    public int getServerPort() {
+        return serverPort;
     }
 }
