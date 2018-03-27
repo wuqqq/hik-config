@@ -17,9 +17,5 @@
             <groupId>org.wuqqq</groupId>
             <artifactId>x-config-common</artifactId>
         </dependency>
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
-        </dependency>
     </dependencies>
 </project>
