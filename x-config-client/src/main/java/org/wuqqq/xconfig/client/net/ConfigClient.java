@@ -17,7 +17,7 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by wuqi5 on 2017/5/11.
+ * @author wuqi 2017/5/11.
  */
 public class ConfigClient {
 

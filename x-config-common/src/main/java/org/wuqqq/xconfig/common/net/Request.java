@@ -5,7 +5,7 @@ import java.util.Map;
 
 /**
  * 请求消息
- * Created by wuqi5 on 2017/4/24.
+ * Created by wuqi on 2017/4/24.
  */
 public class Request {
     private int id;

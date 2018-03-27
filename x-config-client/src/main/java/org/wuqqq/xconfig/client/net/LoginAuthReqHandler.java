@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Created by wuqi5 on 2017/5/15.
+ * @author wuqi 2017/5/15.
  */
 public class LoginAuthReqHandler extends SimpleChannelInboundHandler<Message> {
 

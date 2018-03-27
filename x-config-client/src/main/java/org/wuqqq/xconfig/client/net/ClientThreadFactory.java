@@ -4,7 +4,7 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * Created by wuqi5 on 2017/5/15.
+ * @author wuqi 2017/5/15.
  */
 public class ClientThreadFactory implements ThreadFactory {
     private final AtomicLong count = new AtomicLong(1);

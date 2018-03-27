@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by wuqi5 on 2017/4/24.
+ * @author wuqi 2017/4/24.
  */
 public class Oneway {
     private int id;

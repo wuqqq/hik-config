@@ -1,7 +1,7 @@
 package org.wuqqq.xconfig.common.net;
 
 /**
- * Created by wuqi5 on 2017/4/24.
+ * @author wuqi 2017/4/24.
  */
 public class Commands {
     /**

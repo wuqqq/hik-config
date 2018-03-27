@@ -16,7 +16,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 /**
- * Created by wuqi5 on 2017/5/15.
+ * @author wuqi 2017/5/15.
  */
 @Service
 public class ConfigServer {

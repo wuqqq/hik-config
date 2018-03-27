@@ -5,7 +5,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
 /**
- * Created by wuqi5 on 2017/5/15.
+ * @author wuqi 2017/5/15.
  */
 public class ClientHandler extends SimpleChannelInboundHandler<Message> {
 

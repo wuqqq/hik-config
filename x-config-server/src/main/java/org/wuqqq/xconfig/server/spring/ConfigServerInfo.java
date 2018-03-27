@@ -7,7 +7,7 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.constraints.NotNull;
 
 /**
- * Created by wuqi5 on 2017/5/20.
+ * @author wuqi 2017/5/20.
  */
 @ConfigurationProperties(prefix = "netty")
 @Validated

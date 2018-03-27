@@ -2,7 +2,7 @@ package org.wuqqq.xconfig.common.net;
 
 /**
  * 消息类型
- * Created by wuqi5 on 2017/4/24.
+ * Created by wuqi on 2017/4/24.
  */
 public class MessageType {
 

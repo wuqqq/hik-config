@@ -9,7 +9,7 @@ import java.util.Map;
 
 /**
  * 消息
- * Created by wuqi5 on 2017/4/21.
+ * Created by wuqi on 2017/4/21.
  */
 public class Message {
 

@@ -9,7 +9,7 @@ import java.util.Map;
 
 /**
  * 消息解码
- * Created by wuqi5 on 2017/4/24.
+ * Created by wuqi on 2017/4/24.
  */
 public class MessageDecoder extends LengthFieldBasedFrameDecoder {
 
