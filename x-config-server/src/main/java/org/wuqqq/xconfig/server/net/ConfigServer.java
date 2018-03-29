@@ -23,8 +23,12 @@ public class ConfigServer {
     private final NioEventLoopGroup bossGroup = new NioEventLoopGroup();
     private final NioEventLoopGroup workGroup = new NioEventLoopGroup();
 
+    private final ConfigServerInfo configServerInfo;
+
     @Autowired
-    private ConfigServerInfo configServerInfo;
+    public ConfigServer(ConfigServerInfo configServerInfo) {
+        this.configServerInfo = configServerInfo;
+    }
 
     @PostConstruct
     public void init() throws InterruptedException {

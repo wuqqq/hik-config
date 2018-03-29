@@ -1,7 +1,5 @@
 package org.wuqqq.xconfig.client.net;
 
-import org.wuqqq.xconfig.common.net.MessageDecoder;
-import org.wuqqq.xconfig.common.net.MessageEncoder;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -10,10 +8,11 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.timeout.IdleStateHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.wuqqq.xconfig.common.net.MessageDecoder;
+import org.wuqqq.xconfig.common.net.MessageEncoder;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -50,12 +49,7 @@ public class ConfigClient {
 
     private final EventLoopGroup group = new NioEventLoopGroup(1, new ClientThreadFactory());
 
-    private final ScheduledExecutorService reconnectExecutor = Executors.newScheduledThreadPool(1, new ThreadFactory() {
-        @Override
-        public Thread newThread(Runnable r) {
-            return new Thread(r, "x-config-clientReconnect-thread");
-        }
-    });
+    private final ScheduledExecutorService reconnectExecutor = Executors.newScheduledThreadPool(1, r -> new Thread(r, "client-reconnect-thread"));
 
     public ChannelFuture connect() {
         return buildBootstrap(group).connect();
@@ -63,19 +57,13 @@ public class ConfigClient {
 
     private Bootstrap buildBootstrap(EventLoopGroup group) {
         Bootstrap b = new Bootstrap();
-        b.group(group).channel(NioSocketChannel.class)
-                .option(ChannelOption.SO_KEEPALIVE, true)
-                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5 * 1000)
-                .option(ChannelOption.TCP_NODELAY, true)
-                .handler(new ChannelInitializer<SocketChannel>() {
+        b.group(group).channel(NioSocketChannel.class).option(ChannelOption.SO_KEEPALIVE, true).option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5 * 1000)
+                .option(ChannelOption.TCP_NODELAY, true).handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
-                        ch.pipeline()
-                                .addLast(new IdleStateHandler(readIdleTime, writeIdleTime, Math.max(readIdleTime, writeIdleTime)))
-                                .addLast(new MessageDecoder(1024 * 1024, 2, 4))
-                                .addLast(new MessageEncoder())
-                                .addLast(new LoginAuthReqHandler(ConfigClient.this))
-                                .addLast(new ClientHandler(ConfigClient.this));
+                        ch.pipeline().addLast(new IdleStateHandler(readIdleTime, writeIdleTime, Math.max(readIdleTime, writeIdleTime)))
+                                .addLast(new MessageDecoder(1024 * 1024, 2, 4)).addLast(new MessageEncoder())
+                                .addLast(new LoginAuthReqHandler(ConfigClient.this)).addLast(new ClientHandler(ConfigClient.this));
                     }
                 });
         return b;
@@ -93,19 +81,17 @@ public class ConfigClient {
         if (currentRetryInterval <= 0 || currentRetryInterval > maxRetryInterval) {
             currentRetryInterval = maxRetryInterval;
         }
-        reconnectExecutor.schedule(() ->
-                        buildBootstrap(ctx.channel().eventLoop()).connect().addListener(future -> {
-                            if (!future.isSuccess()) {
-                                LOGGER.error("connect to {}:{} failed, {}", "", "", future.cause());
-                            } else {
-                                LOGGER.info("connect to {}:{} success", "", "");
-                            }
-                        })
-                , currentRetryInterval, TimeUnit.MILLISECONDS);
+        reconnectExecutor.schedule(() -> buildBootstrap(ctx.channel().eventLoop()).connect().addListener(future -> {
+            if (!future.isSuccess()) {
+                LOGGER.error("connect to {}:{} failed, {}", "", "", future.cause());
+            } else {
+                LOGGER.info("connect to {}:{} success", "", "");
+            }
+        }), currentRetryInterval, TimeUnit.MILLISECONDS);
     }
 
     public static void main(String[] args) {
-        for (int i = 0; i < 31; ) {
+        for (int i = 0; i < 31;) {
             System.out.println(1 << i++);
         }
     }

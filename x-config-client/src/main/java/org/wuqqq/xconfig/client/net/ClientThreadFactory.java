@@ -11,7 +11,7 @@ public class ClientThreadFactory implements ThreadFactory {
     @Override
     public Thread newThread(Runnable r) {
         Thread t = new Thread(r);
-        t.setName(String.format("x-config-clientNioEventLoop-thread-%d", count.getAndIncrement()));
+        t.setName(String.format("client-NioEventLoop-%d", count.getAndIncrement()));
         return t;
     }
 }
