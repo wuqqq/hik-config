@@ -50,9 +50,8 @@ public class ConfigServer {
     }
 
     @PreDestroy
-    public void destory() {
+    public void destroy() {
         bossGroup.shutdownGracefully();
         workGroup.shutdownGracefully();
     }
-
 }
