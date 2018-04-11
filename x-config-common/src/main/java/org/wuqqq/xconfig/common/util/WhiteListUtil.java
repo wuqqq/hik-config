@@ -1,6 +1,3 @@
-/**
- * Copyright (C), 2011-2018, 微贷网.
- */
 package org.wuqqq.xconfig.common.util;
 
 /**
