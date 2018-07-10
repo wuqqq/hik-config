@@ -7,15 +7,20 @@ import io.netty.handler.codec.MessageToByteEncoder;
 import java.util.Map;
 
 /**
- * 消息编码
- * Created by wuqi on 2017/4/24.
+ * 消息编码 Created by wuqi on 2017/4/24.
  */
 public class MessageEncoder extends MessageToByteEncoder<Message> {
 
     @Override
     protected void encode(ChannelHandlerContext ctx, Message msg, ByteBuf out) throws Exception {
+        out.writeInt(0);
         out.writeShort(msg.getVersion());
         out.writeByte(msg.getType());
+        if (msg.getData() != null && msg.getData().length > 0) {
+            out.writeInt(msg.getData().length);
+            out.writeBytes(msg.getData());
+        } else
+            out.writeInt(0);
         out.writeInt(msg.getAttachment().size());
         if (!msg.getAttachment().isEmpty()) {
             for (Map.Entry<String, String> entry : msg.getAttachment().entrySet()) {
@@ -29,13 +34,7 @@ public class MessageEncoder extends MessageToByteEncoder<Message> {
                 }
             }
         }
-        if (msg.getData() != null && msg.getData().length > 0) {
-            out.writeInt(msg.getData().length);
-            out.writeBytes(msg.getData());
-        } else {
-            out.writeInt(0);
-        }
-        out.setInt(2, out.readableBytes());
+        out.setInt(0, out.readableBytes() - 4);
         ctx.flush();
     }
 }

@@ -8,8 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 消息解码
- * Created by wuqi on 2017/4/24.
+ * 消息解码 Created by wuqi on 2017/4/24.
  */
 public class MessageDecoder extends LengthFieldBasedFrameDecoder {
 
@@ -25,13 +24,19 @@ public class MessageDecoder extends LengthFieldBasedFrameDecoder {
             return null;
         }
         Message msg = new Message();
-        msg.setVersion(in.readShort());
         int len = in.readInt();
+        msg.setVersion(in.readShort());
         msg.setType(in.readByte());
-        int size = in.readInt();
-        if (size > 0) {
-            Map<String, String> attachment = new HashMap<>(size);
-            for (int i = 0; i < size; i++) {
+        int dataSize;
+        if ((dataSize = in.readInt()) > 0) {
+            byte[] dataArr = new byte[dataSize];
+            in.readBytes(dataArr);
+            msg.setData(dataArr);
+        }
+        int attachmentSize;
+        if ((attachmentSize = in.readInt()) > 0) {
+            Map<String, String> attachment = new HashMap<>(attachmentSize);
+            for (int i = 0; i < attachmentSize; i++) {
                 // 解析key
                 int keySize = in.readInt();
                 byte[] keyArr = new byte[keySize];
@@ -45,12 +50,6 @@ public class MessageDecoder extends LengthFieldBasedFrameDecoder {
                 attachment.put(key, val);
             }
             msg.setAttachment(attachment);
-        }
-        int dataSize = in.readInt();
-        if (dataSize > 0) {
-            byte[] dataArr = new byte[dataSize];
-            in.readBytes(dataArr);
-            msg.setData(dataArr);
         }
         return msg;
     }

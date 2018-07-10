@@ -22,12 +22,12 @@ public class Message {
      */
     private byte type;
 
-    private Map<String, String> attachment;
-
     /**
      * 消息体
      */
     private byte[] data;
+
+    private Map<String, String> attachment;
 
     public static MessageBuilder oneway() {
         return builder().type(MessageType.ONEWAY);

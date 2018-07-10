@@ -62,7 +62,7 @@ public class ConfigClient {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ch.pipeline().addLast(new IdleStateHandler(readIdleTime, writeIdleTime, Math.max(readIdleTime, writeIdleTime)))
-                                .addLast(new MessageDecoder(1024 * 1024, 2, 4)).addLast(new MessageEncoder())
+                                .addLast(new MessageDecoder(1024 * 1024, 0, 4)).addLast(new MessageEncoder())
                                 .addLast(new LoginAuthReqHandler(ConfigClient.this)).addLast(new ClientHandler(ConfigClient.this));
                     }
                 });
